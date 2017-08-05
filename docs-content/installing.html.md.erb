@@ -1,28 +1,47 @@
 ---
-title: Installing and Configuring YOUR-PRODUCT-NAME
-owner: Partners
+title: Installing and Configuring ECS Service Broker for PCF
+owner: Dell EMC
 ---
 
-This topic describes how to install and configure YOUR-PRODUCT-NAME.
-
-##<a id='install'></a> Install and Configure YOUR-PRODUCT-NAME
+##<a id='install'></a> Install and Configure ECS Service Broker for PCF
 
 1. Download the product file from Pivotal Network.
 
-1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file. 
+1. Navigate to the Ops Manager Installation Dashboard and click **Import a
+Product** to upload the product file. 
 
-1. Under the **Import a Product** button, click **+** next to the version number of YOUR-PRODUCT-NAME. 
-This adds the tile to your staging area.
+1. Under the **Import a Product** button, click **+** next to the version number
+of ECS Service Broker for PCF. This adds the tile to your staging area.
 
-1. Click the newly added **YOUR-PRODUCT-NAME** tile.
+1. Click the newly added **ECS Service Broker for PCF** tile.
 
-1. **This portion of the procedure should tell the users how to configure the newly added tile by
-walking them through the sections. Which fields should they fill out? What are the different
-checkboxes? Include relevant screenshots here.** 
+1. Enter the **ECS Management Endpoint** value. This field should be configured
+with the ECS management API, which typically run on port 4443, but may be exposed
+on a different port when accessed through a load-balancer.
+
+1. Enter the **ECS Base URL** value. This field should contain the name of a "Base
+URL" as configured in the ECS. The Base URL is configured in the ECS settings, so
+if you don't know this value, work with the team or person managing the ECS
+platform.
+
+1. Enter the **ECS Replication Group** value. This field should contain the name
+of a "Replication Group" as configured in the ECS. If you don't know this value,
+work with the team or person managing the ECS platform.
+
+1. Enter the **ECS Namespace** value. This field should contain the name of a
+"Namespace" as configured in the ECS. If you don't know this value, work with the
+team or person managing the ECS platform.
+
+1. Enter the **ECS Admin Username** value. This field should contain an ECS
+management user, not to be confused with an object user with is limited to "data
+path" operations. The management user configured should either be configured as a
+"System Admin" or a "Namespace Admin", depending on the goals of the configuration.
+
+1. Review additional configuration parameters for further customization. For more
+information on these configuration parameters, check the
+[ECS Cloud Foundry Broker Wiki](https://github.com/codedellemc/ecs-cf-service-broker/wiki)
 
 1. Click **Save**.
 
-1. Return to the Ops Manager Installation Dashboard and click **Apply changes** to install YOUR-PRODUCT-NAME tile.
-
-**If needed, include additional configuration information below. For example, maybe there are
-configuration options not required for installation but which could be useful for certain users.**
+1. Return to the Ops Manager Installation Dashboard and click **Apply changes** to
+install ECS Service Broker for PCF tile.

@@ -1,15 +1,106 @@
 ---
-title: Using YOUR-PRODUCT-NAME
-owner: Partners
+title: Using ECS Service Broker for PCF
+owner: Dell EMC
 ---
 
-This topic describes how to use YOUR-PRODUCT-NAME.
+This topic describes how to use ECS Service Broker for PCF.
 
-##<a id='using'></a> Using YOUR-PRODUCT-NAME
+##<a id='using'></a> Using ECS Service Broker for PCF
 
-**This topic should include any instructions for how to use the service or dashboard created by the tile. 
-Give procedures for how to perform the different functions offered by your product and provide screenshots where necessary.** 
+The ECS Service Broker is used through the [Pivotal Cloud Foundry
+Marketplace](https://docs.run.pivotal.io/marketplace/)
+to create object-storage buckets and private object-storage namespaces. The broker
+automates the creation, assignment of security credentials and deletion of these
+object services, and exposes it through the familiar marketplace.
 
-**You can also use this section to include information about Architecture and Troubleshooting for known errors. 
-If you include a Troubleshooting section, follow the Symptom/Explanation format used in the 
-[Okta Troubleshooting](http://docs.pivotal.io/p-identity/okta/troubleshooting.html) topic**.
+[Dell EMC Elastic Cloud Storage](https://www.dellemc.com/en-us/storage/ecs/index.htm)
+provides the actual object services themselves.
+
+The ECS Service Broker is purely a broker, and only interacts on the control plane
+of the data, and upgrades or disruptions to the broker do not affect application
+data access to the object storage buckets themselves.
+
+The broker itself is a stateless web application, and therefore can be scaled-out
+for availability or performance. The metadata regarding PCF created services is
+also stored on the ECS platform in a private repository bucket, so the broker
+is not dependent on additional services. In the future, we expect to be able to
+support services spanned across multiple Cloud Foundry foundations, taking
+advantage of the ECS platform's geo-distribution capabilities.
+
+##<a id='troubleshooting'></a> Troubleshooting
+
+### Invalid Certficate
+
+**Symptom:**  Error message containing the phrase
+
+```
+PKI invalid SSL Certification
+```
+
+**Description:** This error indicate the SSL certificate submitted during the Tile
+installation was wrong, or is not part of the broker's trust chain. This can occur
+in two scenarios:
+
+1. The ECS appliance may be installed with a signed certificate; however, the
+Cloud Foundry platform does not support the certificate's trust chain.
+
+1. The ECS appliance is using a self-signed certificate, which must be properly
+imported to the broker, through the tile configuration.
+
+**Resolution:**
+
+If the ECS platform is using a signed certificate, ensure that the PCF platform is
+configured with the appropriate trust-chain. 
+
+A self-signed, or otherwise untrusted, certificate can be configured using the ECS
+Service Broker for PCF tile. From either an avaiable Linux/Unix host with OpenSSL
+installed, or directly form an ECS node, the use the following command get copy of
+the SSL certificate in PEM format
+
+```
+echo | openssl s_client -servername <ECS node hostname/IP> -connect <ECS node hostname/IP>:4443 2>/dev/null | openssl x509 -text
+```
+
+The copy the certificate text, and configure it through the ECS Service Broker for
+PCF tile.
+
+### Improperly Configured ECS connection
+
+**Symptom:** Error message containing the phrase:
+
+```
+Error creating bean with name 'ecsService'
+```
+
+**Description:** This error typically indicates that the broker cannot create a
+connection to the ECS, either due to configuration, or because of an inability to
+communicate through the network.
+
+**Resolution:**
+
+Ensure that the broker parameters are correctly configured in the tile
+configuration. Configuration fields of particular interest include:
+
+* ECS Management Endpoint: this field should be configured with the ECS management
+API, which typically run on port 4443, but may be exposed on a different port when
+accessed through a load-balancer.
+
+* ECS Base URL: this field should contain the name of a "Base URL" as configured
+in the ECS. The Base URL is configured in the ECS settings, so if you don't know
+this value, work with the team or person managing the ECS platform.
+
+* ECS Replication Group: this field should contain the name of a "Replication
+Group" as configured in the ECS. If you don't know this value, work with the team
+or person managing the ECS platform.
+
+* ECS Namespace: this field should contain the name of a "Namespace" as configured
+in the ECS. If you don't know this value, work with the team or person managing
+the ECS platform.
+
+* ECS Admin Username: this field should contain an ECS management user, not to be
+confused with an object user_ with is limited to "data path" operations. The
+management user configured should either be configured as a "System Admin" or a
+"Namespace Admin", depending on the goals of the configuration.
+
+For more information on broker parameters, check the tile configuration page or the
+[ECS Broker project Wiki](https://github.com/codedellemc/ecs-cf-service-broker/wiki).
