@@ -1,106 +1,137 @@
 ---
 title: Using ECS Service Broker for PCF
-owner: Dell EMC
+owner: Partners
 ---
 
-This topic describes how to use ECS Service Broker for PCF.
+This topic describes how to use ECS Service Broker for Pivotal Cloud Foundry (PCF) after it has been installed. 
 
-##<a id='using'></a> Using ECS Service Broker for PCF
+##<a id='using'></a> Use ECS Service Broker for PCF with an App
 
-The ECS Service Broker is used through the [Pivotal Cloud Foundry
-Marketplace](https://docs.run.pivotal.io/marketplace/)
-to create object-storage buckets and private object-storage namespaces. The broker
-automates the creation, assignment of security credentials and deletion of these
-object services, and exposes it through the familiar marketplace.
+To use ECS Service Broker for PCF with an app, follow the procedures in this section to create a service instance and bind the service instance
+to your app. For more information about managing service instances, see <a href="https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html" target="_blank">Managing Service Instances with the cf CLI</a>.
 
-[Dell EMC Elastic Cloud Storage](https://www.dellemc.com/en-us/storage/ecs/index.htm)
-provides the actual object services themselves.
+### <a id="list"></a>View the Service
 
-The ECS Service Broker is purely a broker, and only interacts on the control plane
-of the data, and upgrades or disruptions to the broker do not affect application
-data access to the object storage buckets themselves.
+After the tile is installed, `ecs-broker` and its service
+plans appear in your Marketplace. Run `cf marketplace` to
+see the service listing.
 
-The broker itself is a stateless web application, and therefore can be scaled-out
-for availability or performance. The metadata regarding PCF created services is
-also stored on the ECS platform in a private repository bucket, so the broker
-is not dependent on additional services. In the future, we expect to be able to
-support services spanned across multiple Cloud Foundry foundations, taking
-advantage of the ECS platform's geo-distribution capabilities.
+<pre class="terminal">
+$ cf marketplace
+Getting services from marketplace in org test / space test as admin...
+OK
 
-##<a id='troubleshooting'></a> Troubleshooting
+service            plans                             description
+ecs-bucket         5gb, unlimited*   				 Elastic Cloud S3 Object Storage Bucket
+</pre>
 
-### Invalid Certficate
 
-**Symptom:**  Error message containing the phrase
+### <a id="create"></a> Create a Service Instance
 
-```
-PKI invalid SSL Certification
-```
+Use `cf create-service` to provision a bucket.
 
-**Description:** This error indicate the SSL certificate submitted during the Tile
-installation was wrong, or is not part of the broker's trust chain. This can occur
-in two scenarios:
+The following example creates a `5gb` service that provisions a bucket.
 
-1. The ECS appliance may be installed with a signed certificate; however, the
-Cloud Foundry platform does not support the certificate's trust chain.
+<pre class="terminal">
+$ cf create-service ecs-bucket 5gb my-bucket
+</pre>
 
-1. The ECS appliance is using a self-signed certificate, which must be properly
-imported to the broker, through the tile configuration.
+Check the creation status using `cf services`. This displays a list of all your service instances. To check the status of a specific service instance, run `cf service NAME-OF-YOUR-SERVICE`.
 
-**Resolution:**
+### <a id="bind"></a>Bind the Service Instance to an App
 
-If the ECS platform is using a signed certificate, ensure that the PCF platform is
-configured with the appropriate trust-chain. 
+After you create your bucket, run
+`cf bind-service` to bind the service to your app.
 
-A self-signed, or otherwise untrusted, certificate can be configured using the ECS
-Service Broker for PCF tile. From either an avaiable Linux/Unix host with OpenSSL
-installed, or directly form an ECS node, the use the following command get copy of
-the SSL certificate in PEM format
+<pre class="terminal">
+$ cf bind-service sample-app my-bucket
+</pre>
 
-```
-echo | openssl s_client -servername <ECS node hostname/IP> -connect <ECS node hostname/IP>:4443 2>/dev/null | openssl x509 -text
-```
+### <a id="restart"></a>Restage or Restart Your App
 
-The copy the certificate text, and configure it through the ECS Service Broker for
-PCF tile.
+To enable your app to access the service instance, run `cf restage` or `cf restart` to restage or restart your app.
 
-### Improperly Configured ECS connection
+### <a id="obtain"></a>Obtain Service Instance Access Credentials
 
-**Symptom:** Error message containing the phrase:
+After you bind your service instance to your app, you can find the credentials of your ECS S3
+user in the environment variables of the app.
 
-```
-Error creating bean with name 'ecsService'
-```
+Run `cf env APP-NAME` to display environment variables. The credentials are listed under
+the <a href="https://docs.pivotal.io/pivotalcf/devguide/deploy-apps/environment-variable.html#VCAP-SERVICES" target="_blank">VCAP_SERVICES</a> key.
 
-**Description:** This error typically indicates that the broker cannot create a
-connection to the ECS, either due to configuration, or because of an inability to
-communicate through the network.
+<pre class="terminal">
+$ cf env sample-app
+Getting env variables for app sample-app in org test / space test as admin...
+OK
 
-**Resolution:**
+System-Provided:
+{
+ "VCAP_SERVICES": {
+  "ecs-bucket": [
+   {
+    "credentials": {
+     "access_key_id": "EXAMPLE-ACCESS-KEY",
+     "bucket": "ecs-cf-broker-c369db61-8382-49c7-a1d4-75e6a5a43786",
+     "endpoint": "EXAMPLE-ECS-OBJECT-END-POINT-URL",
+	 "s3Url": "http://<access_key_id>:<secret_access_key>@<EXAMPLE-ECS-OBJECT-END-POINT-URL>/ecs-cf-broker-c369db61-8382-49c7-a1d4-75e6a5a43786",
+     "secret_access_key": "EXAMPLE-SECRET-ACCESS-KEY"
+    },
+    "label": "ecs-bucket",
+    "name": "my-bucket",
+    "plan": "5gb",
+    "provider": null,
+    "syslog_drain_url": null,
+    "tags": [
+     "s3",
+     "bucket"
+    ],
+    "volume_mounts": []
 
-Ensure that the broker parameters are correctly configured in the tile
-configuration. Configuration fields of particular interest include:
+   }
+  ]
+ }
+}
+...
+</pre>
 
-* ECS Management Endpoint: this field should be configured with the ECS management
-API, which typically run on port 4443, but may be exposed on a different port when
-accessed through a load-balancer.
+You can use the access key ID, secret access key, bucket, and region to connect to a bucket.
 
-* ECS Base URL: this field should contain the name of a "Base URL" as configured
-in the ECS. The Base URL is configured in the ECS settings, so if you don't know
-this value, work with the team or person managing the ECS platform.
+##<a id='deleting'></a> Delete an ECS Service Broker for PCF Service Instance
 
-* ECS Replication Group: this field should contain the name of a "Replication
-Group" as configured in the ECS. If you don't know this value, work with the team
-or person managing the ECS platform.
+<p class="note warning"><strong>WARNING!</strong> Before deleting a service instance, you must back up the data stored in your bucket. This operation cannot be undone, and all the data is lost when the service is deleted.</p>
 
-* ECS Namespace: this field should contain the name of a "Namespace" as configured
-in the ECS. If you don't know this value, work with the team or person managing
-the ECS platform.
+Follow the instructions below to unbind your service instance from all apps and delete it.
 
-* ECS Admin Username: this field should contain an ECS management user, not to be
-confused with an object user_ with is limited to "data path" operations. The
-management user configured should either be configured as a "System Admin" or a
-"Namespace Admin", depending on the goals of the configuration.
+### <a id="list2"></a>List Available Services
 
-For more information on broker parameters, check the tile configuration page or the
-[ECS Broker project Wiki](https://github.com/codedellemc/ecs-cf-service-broker/wiki).
+Run `cf service` to list your available services.
+
+<pre class="terminal">
+$ cf service
+
+Getting services in org test / space test as admin...
+OK
+
+name           service    plan    bound apps   last operation
+my-bucket      ecs-bucket 5gb     sample-app   create succeeded
+</pre>
+
+This example shows that `my-bucket` is bound to the `sample-app` app.
+
+### <a id="unbind"></a>Unbind a Service Instance
+
+Run `cf unbind` to unbind the service from your app:
+
+<pre class="terminal">
+$ cf unbind-service sample-app my-bucket
+</pre>
+
+### <a id="delete"></a>Delete a Service Instance
+
+Run `cf delete-service` to delete the service.
+
+<pre class="terminal">
+  $ cf delete-service my-bucket
+</pre>
+
+Run the `cf services` command to check the deletion status.
