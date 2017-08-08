@@ -1,97 +1,87 @@
 ---
 title: ECS Service Broker for PCF
-owner: Dell EMC
+owner: Partners
 ---
+<style>
+    .note.warning {
+        background-color: #fdd;
+        border-color: #fbb
+    }
+
+    .note.warning:before {
+        color: #f99;
+     }
+</style>
+
+<p class="note warning">
+<strong>WARNING! </strong>
+The ECS BROKER for PCF tile is currently in beta and is intended for evaluation and test purposes only.
+Do not use this product in a PCF production environment.
+</p>
+
+This documentation describes ECS BROKER for Pivotal Cloud Foundry (PCF).
+
+ECS BROKER for PCF registers a service broker on PCF and exposes its service plans on the Marketplace. Developers can provision buckets by creating instances of service plans using Apps Manager or the cf Command Line Interface (CLI) tool.
 
 ## <a id='overview'></a>Overview
 
-This tile provides a service broker for Pivotal Cloud Foundry to connect to Dell
-EMC Elastic Cloud Storage (ECS). ECS is an object storage platform providing a
-number of object and file storage protcols, including S3, Swift, HDFS, NFS & Atmos
-for both private and public cloud deployments.
+ECS BROKER for PCF includes the following key features:
 
-## <a id='features'></a>Key Features
-
-ECS Service Broker for PCF includes the following key features:
-
-* Ability Create and Bind Apps to ECS S3 Buckets
-* Ability to Create and Bind Apps to private ECS namespaces
-* Support for PCF Volume Services via ECS NFS
-* Parallel access to data via both S3 & NFS protocols for file-enabled buckets
-* Customized Catalog Services and Plans
-* A variety of bucket features, including quotas, encryption, retention &
-compliance
-* Upgrade beteween bucket plans with different quotas and other bucket features
-* Support for multi-site buckets
-* Per Application Binding ACLs (read-only, read-write, etc.)
+* Create and Delete Object Storage Buckets
+* Create and Delete Object Storage Namespaces
+* Bind one or more Cloud Foundry applications to a bucket or namespace, with unique credentials and permissions for each application
+* Support quota enforced plans for buckets to limit the amount of capacity
+* Support for encryption and retention of namespaces
+* Change plans of an existing bucket
+* Browse Cloud Foundry instance and binding metadata through an internal bucket
+* Specify an ECS namespace and replication group for provisioning
+* Provide a string prefix for bucket and user names
+* Support a self-signed SSL certificate for the ECS management API
+* Configure offered services & plans through a YAML based configuration
+* Support file system mounts of file access enabled buckets via NFS
 
 ## <a id="snapshot"></a>Product Snapshot
-
-The following table provides version and version-support information about
-ECS Service Broker for PCF.
 
 <table class="nice">
     <th>Element</th>
     <th>Details</th>
     <tr>
-        <td>Tile version</td>
-        <td>1.0</td>
+        <td>Version</td>
+        <td>v0.5.0</td>
     </tr>
     <tr>
         <td>Release date</td>
-        <td>August 24, 2017</td>
+        <td>May 15, 2017</td>
     </tr>
     <tr>
         <td>Software component version</td>
-        <td>ECS 3.0 HF1</td>
+        <td>v0.5.0</td>
     </tr>
     <tr>
         <td>Compatible Ops Manager version(s)</td>
-        <td>v1.10.x, v1.11.x</td>
+        <td>v1.8.x, v1.9.x, v1.10.x</td>
     </tr>
     <tr>
         <td>Compatible Elastic Runtime version(s)</td>
-        <td>v1.10.x, v1.11.x</td>
+        <td>v1.8.x, v1.9.x, v1.10.x</td>
     </tr>
     <tr>
         <td>IaaS support</td>
-        <td>AWS, Azure, GCP, OpenStack, and vSphere</td>
+        <td>AWS, Azure, OpenStack, and vSphere</td>
     </tr>
     <tr>
         <td>IPsec support?</td>
-        <td>Yes</td>
+        <td>No</td>
     </tr>
 </table>
 
 ## <a id="reqs"></a>Requirements
 
-ECS Service Broker for PCF has the following requirements:
+ECS BROKER for PCF has the following requirements:
 
-+ An external Dell EMC Elastic Cloud Storage system
-
-+ For high-availability and best performance, a load-balancer should also be used
-
-## <a id="limitations"></a>Limitations
-
-* The ECS service broker currently supports a single default namespace and ECS
-replication group. If multiple are desired, it's possible to deploy multiple
-service brokers.
-
-* Currently, only S3, and NFS protocols are supported through
-the broker bindings.
++ [Elastic Runtime](https://network.pivotal.io/products/elastic-runtime)  v1.10
 
 ## <a id="feedback"></a>Feedback
 
-If you have a feature request, questions, or information about a bug, please email
-[Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) list or send an email to YOUR-SUPPORT-EMAIL.
-
-## <a id='license'></a>License
-
-Licensed under the Apache License, Version 2.0 (the “License”); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at <http://www.apache.org/licenses/LICENSE-2.0>
-
-Unless required by applicable law or agreed to in writing, software distributed
-under the License is distributed on an “AS IS” BASIS, WITHOUT WARRANTIES OR
-CONDITIONS OF ANY KIND, either express or implied. See the License for the
-specific language governing permissions and limitations under the License.
+Report bugs, make feature requests, or ask questions on the
+[Pivotal Cloud Foundry Feedback](mailto:pivotal-cf-feedback@pivotal.io) list, or send an email to [ECS Customer Support](mailto:ecstiles-support@dell.com).
