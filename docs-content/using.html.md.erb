@@ -7,8 +7,10 @@ This topic describes how to use ECS Service Broker for Pivotal Cloud Foundry (PC
 
 ##<a id='using'></a> Use ECS Service Broker for PCF with an App
 
-To use ECS Service Broker for PCF with an app, follow the procedures in this section to create a service instance and bind the service instance
-to your app. For more information about managing service instances, see <a href="https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html" target="_blank">Managing Service Instances with the cf CLI</a>.
+To use ECS Service Broker for PCF with an app, follow the procedures
+in this section to create a service instance and bind the service instance to your app.
+For more information about managing service instances,
+see <a href="https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html" target="_blank">Managing Service Instances with the cf CLI</a>.
 
 ### <a id="list"></a>View the Service
 
@@ -47,7 +49,7 @@ After you create your bucket, run
 $ cf bind-service sample-app my-bucket
 </pre>
 
-### <a id="restart"></a>Restage or Restart your App
+### <a id="restart"></a>Restage or Restart Your App
 
 To enable your app to access the service instance, run `cf restage` or `cf restart` to restage or restart your app.
 

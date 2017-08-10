@@ -3,7 +3,7 @@ title: Installing and Configuring ECS Service Broker for PCF
 owner: Partners
 ---
 
-This topic describes how to install and configure ECS Service Broker for PCF.
+This topic describes how to install and configure ECS Service Broker for Pivotal Cloud Foundry (PCF).
 
 ##<a id='install'></a> Install and Configure ECS Service Broker for PCF
 
@@ -19,15 +19,17 @@ This adds the tile to your staging area.
 ##<a id='install'></a>Configure ECS Service Broker for PCF
 
 1. Click **Service Broker Application**.
-2. For **Service Broker Application Name**, enter the name for the Service Broker App.
-3. For **Service Broker Application version**, enter the version of the Service Broker App (Final app name would include app version like `${appName}-${appversion}`.
-4. For **Service Broker Application URI**, enter the uri/endpoint for the Service Broker app (on push to CF).
-5. For **Open up Security Groups**, eheck to open up security group on CF for Service Broker to access other apps or CF Cloud Controller.
-6. For **Enable Global access to all Services and Plans**, check to open up access to all service plans across all orgs and spaces
+2. For **Service Broker Application Name**, enter the name for the service broker app.
+3. For **Service Broker Application version**, enter the version of the service broker app.
+   (Final app name will include an app version like `${appName}-${appversion}`.
+4. For **Service Broker Application URI**, enter the URI/endpoint for the service broker app (on push to CF).
+5. For **Open up Security Groups**, check to open up security group on CF for service broker to access other apps or CF Cloud Controller.
+6. For **Enable Global access to all Services and Plans**, check to open up access to all service plans across all orgs and spaces.
 7. For **ECS Management Endpoint**, enter the URI/endpoint for the ECS HTTPS management API.
 8. For **ECS Object Endpoint**, Enter the URI/endpoint for the ECS S3 API. Not needed the base URL endpoint should be used.
 9. (Optional) For **ECS Base URL**, enter the name of the ECS configured base URL that should be used with bucket credentials.
-10. (Optional) For **Repository Endpoint**, enter the uri/endpoint for the ECS S3 API that should be used for persisting broker metadata.  Defaults to the object endpoint or base url.
+10. (Optional) For **Repository Endpoint**, enter the URI/endpoint for the ECS S3 API that should be used for persisting broker metadata.
+    Defaults to the object endpoint or base URL.
 11. For **Replication Group**, enter the ID of the ECS replication group to be used for created buckets.
 12. For **Namespace**, enter the name of the ECS namespace to be used for created buckets and users.
 13. (Optional) For **Repository User**, enter the name of the user that should be created/used for managing broker metadata.
@@ -35,9 +37,11 @@ This adds the tile to your staging area.
 15. For **ECS Admin Username**, enter the name of the ECS Management API user.
 16. For **ECS Admin Password**, enter the ECS Management API password.
 17. (Optional) For **ECS Repository Prefix**, enter a string used to prefix broker created buckets and users.
-18. For **ECS Management Certification**, enter certification to enable broker to communicate with ECS API Managment
-19. For **ECS Broker Security Username**, enter the name to register broker.  Defaults to "user".
-20. For **ECS Broker Password**, enter the password to register broker.  Defaults to "password"
-21. For **ECS Management API Version**, Enter ECS management api version
+18. For **ECS Management Certification**, enter certification to enable the broker to communicate with ECS API Managment.
+19. For **ECS Broker Security Username**, enter the name for the register broker.
+    Defaults to "user".
+20. For **ECS Broker Password**, enter the password for the register broker.
+    Defaults to "password".
+21. For **ECS Management API Version**, enter the ECS management API version.
 22. Click **Save**.
 23. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install ECS Service Broker for PCF.
