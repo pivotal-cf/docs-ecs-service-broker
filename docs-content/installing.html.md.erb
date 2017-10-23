@@ -19,29 +19,37 @@ This adds the tile to your staging area.
 ##<a id='install'></a>Configure ECS Service Broker for PCF
 
 1. Click **Service Broker Application**.
-2. For **Service Broker Application Name**, enter the name for the service broker app.
+2. For **Service Broker Application Name**, enter the name the broker should run as, when running as a Cloud Foundry application.
 3. For **Service Broker Application version**, enter the version of the service broker app.
    (Final app name will include an app version like `${appName}-${appversion}`.
-4. For **Service Broker Application URI**, enter the URI/endpoint for the service broker app (on push to CF).
+4. For **Service Broker Application URI**, enter the URI for the service broker app (on push to CF). This will be the route created by PCF when deployed.
 5. For **Open up Security Groups**, check to open up security group on CF for service broker to access other apps or CF Cloud Controller.
 6. For **Enable Global access to all Services and Plans**, check to open up access to all service plans across all orgs and spaces.
-7. For **ECS Management Endpoint**, enter the URI/endpoint for the ECS HTTPS management API.
-8. For **ECS Object Endpoint**, Enter the URI/endpoint for the ECS S3 API. Not needed the base URL endpoint should be used.
-9. (Optional) For **ECS Base URL**, enter the name of the ECS configured base URL that should be used with bucket credentials.
-10. (Optional) For **Repository Endpoint**, enter the URI/endpoint for the ECS S3 API that should be used for persisting broker metadata.
+7. Click **Save**.
+8. Click **Dell EMC ECS Connectivity**.
+9. For **ECS Management Endpoint**, enter the URI/endpoint for the ECS HTTPS management API.
+10. For **Replication Group**, enter the name of the ECS replication group to be used for created buckets.
+11. For **Namespace**, enter the name of the ECS namespace to be used for created buckets and users.
+12. For **ECS Admin Username**, enter the name of the ECS Management API user.
+13. For **ECS Admin Password**, enter the ECS Management API password.
+14. (Optional) For **ECS Base URL**, enter the name of the ECS configured base URL that should be used with bucket credentials. If no value is entered
+    the broker will attempt to discover a default value.
+15. Choose whether or not the ECS system has a certificate installed, which is signed by an available trust authority. This may not be available for development
+    environments, and is not the case for self-signed certificates.
+16. If the installed ECS certificate is not signed by a trust authority, complete the **ECS Management Certificate** field by entering  the ECS certificate.
+17. To overload a value determined from the **Base URL**, or if not Base URL was provided, complete the **ECS Object Endpoint** field by entering the URI/endpoint
+    for the ECS S3 API.
+18. Click **Save**.
+19. Click **Service Broker Webservice Settings**.
+20. For **Service Broker API Version**, enter the version of Cloud Foundry Service Broker API that the broker should respond, or choose "*" for all version.
+21. (Optional) For **ECS Repository Prefix**, enter a string used to prefix broker created buckets and users.
+22. (Optional) For **Repository Endpoint**, enter the URI/endpoint for the ECS S3 API that should be used for persisting broker metadata.
     Defaults to the object endpoint or base URL.
-11. For **Replication Group**, enter the ID of the ECS replication group to be used for created buckets.
-12. For **Namespace**, enter the name of the ECS namespace to be used for created buckets and users.
-13. (Optional) For **Repository User**, enter the name of the user that should be created/used for managing broker metadata.
-14. (Optional) For **Repository Bucket**, enter the name of the bucket that should be created/used for managing broker metadata.
-15. For **ECS Admin Username**, enter the name of the ECS Management API user.
-16. For **ECS Admin Password**, enter the ECS Management API password.
-17. (Optional) For **ECS Repository Prefix**, enter a string used to prefix broker created buckets and users.
-18. For **ECS Management Certification**, enter certification to enable the broker to communicate with ECS API Managment.
-19. For **ECS Broker Security Username**, enter the name for the register broker.
-    Defaults to "user".
-20. For **ECS Broker Password**, enter the password for the register broker.
-    Defaults to "password".
-21. For **ECS Management API Version**, enter the ECS management API version.
-22. Click **Save**.
-23. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install ECS Service Broker for PCF.
+23. (Optional) For **Repository User**, enter the name of the user that should be created/used for managing broker metadata.
+24. (Optional) For **Repository Bucket**, enter the name of the bucket that should be created/used for managing broker metadata.
+25. Click **Save**.
+26. Click **Catalog Service 1**.
+27. Review settings for catalog service and plans. These settings define the services available in the PCF marketplace. If any changes are made, click **save** to
+    retain changes.
+28. Repeat review of remaining catalog services. Services 4 and 5 are both disabled by default, but available for customization.
+29. Return to the Ops Manager Installation Dashboard and click **Apply Changes** to install ECS Service Broker for PCF.
