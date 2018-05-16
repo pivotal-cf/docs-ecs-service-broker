@@ -5,9 +5,9 @@
 :subnav_templates:
   ecs-service-broker: ecs-service-broker_subnav
 :template_variables: 
-:local_repo_dir: "/Users/ghanna/workspace/docs-ecs-service-broker"
+:local_repo_dir: "/Users/spiegela/src/proj/emc/docs-ecs-service-broker"
 :workspace: !ruby/object:Pathname
-  path: "/Users/ghanna/workspace/docs-ecs-service-broker/docs-book/output/master_middleman/source"
+  path: "/Users/spiegela/src/proj/emc/docs-ecs-service-broker/docs-book/output/master_middleman/source"
 :feedback_enabled: 
 :repo_link_enabled: true
 :repo_links:
