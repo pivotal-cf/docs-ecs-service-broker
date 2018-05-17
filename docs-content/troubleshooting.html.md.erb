@@ -1,0 +1,107 @@
+---
+title: Troubleshooting problems with ECS Service Broker for PCF
+owner: Partners
+---
+
+This document describes troubleshooting steps and common issues when running the
+ECS Service Broker for Pivotal Cloud Foundry (PCF).
+
+# <a id="collecting-logs"></a>Collecting Logs
+
+The ECS Service Broker is installed via a tile in Operations Manager, so when an
+installation fails collecting logs from Ops Manager is helpful. To do this,
+navigate to the Ops Manager "Installation Dashboard" and select *Change Log*.
+Find the entry for the ECS PCF Service Broker (you can search for ECS), and click
+*Logs*. The logs will be displayed for the following BOSH errands:
+
+* Installing Dell EMC ECS Broker
+* Running errand deploy-service-broker for DELL EMC ECS Broker
+* Running errand register-broker for DELL EMC ECS Broker
+
+If errors are encountered during run time, or more detailed logs are required,
+you can also collect logs from the actual deployed application. To find these
+logs, navigate to PCF "Apps Manager" UI. Find the organization and space for the
+ECS broker, which is typically "ecs-broker-service-org" and "ecs-broker-service-space".
+From there, you can view detailed application logs.
+
+#<a id="general-steps"></a>General Troubleshooting Steps
+
+For the most part, issues with the broker are a result of incorrect configuration.
+Here are some general things to check, which commonly resolve issues:
+
+1. Make sure you have HTTP connectivity to both the ECS management API, which
+typically runs on port 4443, and ECS S3 service, which will run on port 9020 (HTTP)
+and port 9021 (HTTPS).  If you are accessing ECS through a load-balancer (as is
+the case with ECS Test Drive) these port numbers may be different.
+
+To test access to these ports, you can use the CURL command from a Linux or Mac
+OS host:
+
+```
+$ curl -v -k https://<ECS IP or HOST>:4443/login
+
+$ curl -v -k http://<ECS IP or HOST>:9020/
+
+$ curl -v -k https://<ECS IP or HOST>:9021/
+```
+
+You should get an "Unauthorized" error, but at least that will validate
+connectivity.
+
+2. Make sure you have "Management User" credentials configured for the "ECS
+Admin Username".
+
+ECS has support for two types of users: object users, and management. The broker
+will require a management user to be configured. You can test authentication
+with CURL also:
+
+```
+$ curl -k -u <username>:<password> https://<ECS IP or HOST>/login
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><loggedIn><user>USERNAME</user></loggedIn>
+```
+
+3. Make sure that the ECS certificate is configured properly.
+
+A production ECS installation will typically have a _signed certificate_
+installed, which does not require any special confguration. If this is the case,
+ensure that the tile prompt, _"Is the ECS SSL certificate is signed by a trust
+authority?"_ is marked as *true*.
+
+If using a self-signed certificate, you must import that cert into the tile
+configuration. You can read the cert from the host using the `openssl` command
+from a Linux or Mac OS workstation as follows:
+
+```
+$ openssl s_client -showcerts -connect <ECS IP or HOST>.com:4443 < /dev/null | \
+  openssl x509 -text | sed -n -e '/BEGIN\ CERTIFICATE/,/END\ CERTIFICATE/ p'
+```
+
+# <a id="common-issues"></a>Common Issues
+
+Here is a list of error messages and their respective resolutions:
+
+## Access is denied
+
+You may see an error matching the following in the broker stack trace:
+
+```
+Error: Unauthorized (401): Access is denied due to invalid or expired credentials
+```
+
+This is likely an error with the management username or password
+
+## Unable to render template for job 'deploy-service-broker'
+
+You may see an error in the BOSH logs that match the following:
+
+```
+Error filling in template 'application.yml.erb' (line 38: undefined method `plan_guid' for nil:NilClass)
+```
+
+If this error appears, check the "Catalog Service" pages of the ECS broker tile,
+and ensure that at least one service is selected at the "repository service",
+and one of that service's plans  and "repository plan".
+
+These are used for the broker to create an internal bucket used by the broker for
+its own metadata.
