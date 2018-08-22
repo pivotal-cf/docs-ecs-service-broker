@@ -37,25 +37,9 @@ of ECS Service Broker for PCF. This adds the tile to your staging area.
 
 
 ## <a id='install'></a>Configure ECS Service Broker for PCF
+1. **Assign AZs and Networks**, Confirm that the default Availability Zones and Network fields are correct.
 
-1. Click **Service Broker Application**.
-
-1. For **Service Broker Application Name**, enter the name the broker should run
-   as when running as a Cloud Foundry application.
-
-1. For **Service Broker Application version**, enter the version of the service
-broker app. The final app name will include an app version like `${appName}-${appversion}`.
-
-1. For **Service Broker Application URI**, enter the URI for the service broker
-   app (on push to CF). This will be the route PCF creates when deployed.
-
-1. For **Open up Security Groups**, check to open up a security group on CF for the
-   service broker to access other apps or CF Cloud Controller.
-
-1. For **Enable Global access to all Services and Plans**, check the checkbox to open up
-   access to all service plans across all orgs and spaces.
-
-1. Click **Save**.
+1. Click **Save** if any changes have been made.
 
 1. Navigate to **Dell EMC ECS Connectivity**.
 
@@ -94,13 +78,9 @@ broker app. The final app name will include an app version like `${appName}-${ap
 
 1. Click **Save**.
 
-1. Navigate to **Service Broker Webservice Settings**.
+1. Navigate to **Service Broker Settings**.
 
-1. For **Service Broker API Version**, enter the version of Cloud Foundry
-    Service Broker API to which the broker should respond, or choose **&ast;** for all
-    versions.
-
-1. (Optional) For **ECS Repository Prefix**, enter a string used to prefix
+1. (Optional) For **Broker Prefix**, enter a string used to prefix
      broker-created buckets and users. For ECS Test Drive users, use your
      Namespace value here to ensure that there are no username conflicts
      between public users.
@@ -127,5 +107,10 @@ broker app. The final app name will include an app version like `${appName}-${ap
     disabled by default, but available for customization.
 <p class='note'><strong>Note:</strong> File-enabled buckets and Namespace services will not function on ECS Test
    Drive.</p>
+
+1. For **Enable Global access to all Services and Plans**, navigate to **Service Access** and check the checkbox to open up
+access to all service plans across all orgs and spaces.
+
+1. Click **Save**
 
 1. Return to the Ops Manager Installation Dashboard and click **Apply Changes**.
