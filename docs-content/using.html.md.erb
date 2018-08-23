@@ -26,7 +26,7 @@ Getting services from marketplace in org test / space test as admin...
 OK
 
 service            plans                             description
-ecs-bucket         5gb, unlimited*   				 Elastic Cloud S3 Object Storage Bucket
+ecs-bucket         5gb, unlimited*                   Elastic Cloud S3 Object Storage Bucket
 </pre>
 
 ### <a id="create"></a> Create a Service Instance
@@ -80,7 +80,7 @@ System-Provided:
      "access_key_id": "EXAMPLE-ACCESS-KEY",
      "bucket": "ecs-cf-broker-c369db61-8382-49c7-a1d4-75e6a5a43786",
      "endpoint": "EXAMPLE-ECS-OBJECT-END-POINT-URL",
-	 "s3Url": "http://<access_key_id>:<secret_access_key>@<EXAMPLE-ECS-OBJECT-END-POINT-URL>/ecs-cf-broker-c369db61-8382-49c7-a1d4-75e6a5a43786",
+     "s3Url": "http://<access_key_id>:<secret_access_key>@<EXAMPLE-ECS-OBJECT-END-POINT-URL>/ecs-cf-broker-c369db61-8382-49c7-a1d4-75e6a5a43786",
      "secret_access_key": "EXAMPLE-SECRET-ACCESS-KEY"
     },
     "label": "ecs-bucket",
@@ -148,7 +148,46 @@ Run `cf delete-service` to delete the service.
 
 Run the `cf services` command to check the deletion status.
 
-### <a id="sample-app"></a> Sample Application
+##<a id='using'></a> Use ECS Service Broker for PCF with an App
 
-For a fully-featured sample application using Spring Cloud for S3 connectivity,
-see this adapted [Cloud Foundry ECS Demo Application](https://github.com/spiegela/cf-ecs-demo).
+To use ECS Service Broker for PCF with an app, follow the procedures
+in this section to create a service instance and bind the service instance to your app.
+For more information about managing service instances,
+see <a href="https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html" target="_blank">Managing Service Instances with the cf CLI</a>.
+
+### <a id="remote"></a> Connect an ECS service to a remote PCF instance
+
+There are cases in which a single logical application is spread across multiple
+PCF instances. Often in these cases there is a desire to share data between these
+application instances.
+
+In the past, doing so required the developer to create "user provided services",
+but doing this is less than ideal, since the process is complex, and PCF has no
+way to know when it is safe to delete a bucket bound via a user-provided service.
+
+The ECS service broker supports the ability to create a "remote connection" to
+an existing bucket, which allows developers to take advantage of the strongly-consistent
+geo-distribution features of ECS, and retain the PCF experience.
+
+Having created a bucket named `my_bucket` previously, we can not connect to that
+bucket on another PCF instance. First on the original PCF instance, create a
+"remote connection" service key.
+
+<pre class="terminal">
+$ cf create-service-key my-bucket pcf2 -c '{"connect_remote": true}'
+
+</pre>
+
+View the service key information created:
+
+<pre class="terminal">
+$ cf service-key my-bucket pcf2
+</pre>
+
+Next on the _alternate_ PCF instance create an service instance of the same bucket
+connecting remotely to the existing one:
+
+<pre class="terminal">
+$ cf create-service ecs-bucket 5gb my-bucket -c '{"remote_connection": {""}}'
+</pre>
+
