@@ -43,6 +43,15 @@ After you create your bucket, run `cf bind-service` to bind the service to your 
 $ cf bind-service sample-app my-bucket
 </pre>
 
+In tiles using broker (software) version 1.1.3 and later connected to ECS v3.3 and later, bucket policy can be applied to ECS buckets provisioned by the broker. This is enabled on binding like so:
+<pre class="terminal">
+$ cf bind-service sample-app my-bucket -c '{"policy": "default-total-access"}'
+</pre>
+
+This parameter gives the binding user full control of the bucket, including the ability to set bucket policy. As of broker v1.1.3 this is the only policy that can be set via cf.
+In order to apply a custom bucket policy use the binding parameters, as shown above, to grant the user permission to alter bucket policy. Then, using another method, set the bucket policy with the binding user/credentials.
+Support for custom bucket policy application via cf is in progress.
+
 ### <a id="restart"></a> Restage or Restart Your App
 
 To enable your app to access the service instance, run `cf restage` or `cf restart` to restage or restart your app.
