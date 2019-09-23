@@ -1,14 +1,14 @@
 ---
-title: Using ECS Service Broker for PCF
+title: Using ECS Service Broker for Pivotal Platform
 owner: Partners
 ---
 
-This topic describes how to use ECS Service Broker for Pivotal Cloud Foundry (PCF) after it has been installed.
+This topic describes how to use ECS Service Broker for Pivotal Platform after it has been installed.
 
 
-## <a id='using'></a> Using ECS Service Broker for PCF with an App
+## <a id='using'></a> Using ECS Service Broker for Pivotal Platform with an App
 
-To use ECS Service Broker for PCF with an app, follow the procedures in this section to create a service instance and bind the service instance to your app. For more information about managing service instances, see [Managing Service Instances with the cf CLI](https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html).
+To use ECS Service Broker for Pivotal Platform with an app, follow the procedures in this section to create a service instance and bind the service instance to your app. For more information about managing service instances, see [Managing Service Instances with the cf CLI](https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html).
 
 ### <a id="list"></a> View the Service
 
@@ -100,7 +100,7 @@ System-Provided:
 You can use the access key ID, secret access key, bucket, and region to connect to a bucket.
 
 
-## <a id='deleting'></a> Delete an ECS Service Broker for PCF Service Instance
+## <a id='deleting'></a> Delete an ECS Service Broker for Pivotal Platform Service Instance
 
 Follow the instructions below to unbind your service instance from all apps and delete it.
 
@@ -141,20 +141,20 @@ Run `cf delete-service` to delete the service.
 Run the `cf services` command to check the deletion status.
 
 
-## <a id='using'></a> Use ECS Service Broker for PCF with an App
+## <a id='using'></a> Use ECS Service Broker for Pivotal Platform with an App
 
-To use ECS Service Broker for PCF with an app, follow the procedures in this section to create a service instance and bind the service instance to your app. For more information about managing service instances,
+To use ECS Service Broker for Pivotal Platform with an app, follow the procedures in this section to create a service instance and bind the service instance to your app. For more information about managing service instances,
 see [Managing Service Instances with the cf CLI](https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html).
 
-### <a id="remote"></a> Connect an ECS Service to a Remote PCF Instance
+### <a id="remote"></a> Connect an ECS Service to a Remote Pivotal Platform Instance
 
-There are cases in which a single logical app is spread across multiple PCF instances. Often in these cases there is a desire to share data between these app instances.
+There are cases in which a single logical app is spread across multiple Pivotal Platform instances. Often in these cases there is a desire to share data between these app instances.
 
-In the past, doing so required the developer to create "user provided services", but doing this is less than ideal, since the process is complex and PCF has no way to know when it is safe to delete a bucket bound via a user-provided service.
+In the past, doing so required the developer to create "user provided services", but doing this is less than ideal, since the process is complex and Pivotal Platform has no way to know when it is safe to delete a bucket bound via a user-provided service.
 
-The ECS service broker supports the ability to create a "remote connection" to an existing bucket, which allows developers to take advantage of the strongly-consistent geo-distribution features of ECS, and retain the PCF experience.
+The ECS service broker supports the ability to create a "remote connection" to an existing bucket, which allows developers to take advantage of the strongly-consistent geo-distribution features of ECS, and retain the Pivotal Platform experience.
 
-Having created a bucket named `my_bucket` previously, you cannot connect to that bucket on another PCF instance. First on the original PCF instance, create a "remote connection" service key by running the following command:
+Having created a bucket named `my_bucket` previously, you cannot connect to that bucket on another Pivotal Platform instance. First on the original Pivotal Platform instance, create a "remote connection" service key by running the following command:
 
 <pre class="terminal">
 $ cf create-service-key my-bucket pcf2 -c '{"connect_remote": true}'
@@ -167,7 +167,7 @@ View the service key information created by running the following command:
 $ cf service-key my-bucket pcf2
 </pre>
 
-Next on the _alternate_ PCF instance, create an service instance of the same bucket connecting remotely to the existing one:
+Next on the _alternate_ Pivotal Platform instance, create an service instance of the same bucket connecting remotely to the existing one:
 
 <pre class="terminal">
 $ cf create-service ecs-bucket 5gb my-bucket -c '{"remote_connection": {""}}'
