@@ -1,19 +1,19 @@
 ---
-title: Installing and Configuring ECS Service Broker for Pivotal Platform
+title: Installing and Configuring ECS Service Broker for VMware Tanzu
 owner: Partners
 ---
 
-This topic describes how to install and configure ECS Service Broker for Pivotal Platform.
+This topic describes how to install and configure ECS Service Broker for VMware Tanzu.
 
 
-## <a id='install'></a> Install and Configure ECS Service Broker for Pivotal Platform
+## <a id='install'></a> Install and Configure ECS Service Broker for VMware Tanzu
 
-The ECS Service Broker installs as a single Pivotal Platform-deployed application, which makes API calls to an externally-hosted Dell EMC ECS installation. The broker uses a combination of both the ECS `management` API (which typically runs on port `4443` on ECS) and the S3 API (which runs on ports `9020`/`HTTP` and `9021`/`HTTPS`). If you do not yet have access to an ECS environment, you have two options:
+The ECS Service Broker installs as a single VMware Tanzu-deployed application, which makes API calls to an externally-hosted Dell EMC ECS installation. The broker uses a combination of both the ECS `management` API (which typically runs on port `4443` on ECS) and the S3 API (which runs on ports `9020`/`HTTP` and `9021`/`HTTPS`). If you do not yet have access to an ECS environment, you have two options:
 
 * Install the [ECS Community Edition](https://github.com/EMCECS/ECS-CommunityEdition) Docker-based install.
 * Use the publicly available [ECS Test Drive](https://ecstestdrive.com).
 
-To install the service broker, you must configure the broker application to connect to the ECS management API. If desired, you may also customize the services and plans offered in the Pivotal Platform marketplace with additional pages in the Tile interface.
+To install the service broker, you must configure the broker application to connect to the ECS management API. If desired, you may also customize the services and plans offered in the VMware Tanzu marketplace with additional pages in the Tile interface.
 
 To start running the ECS broker, do the following:
 
@@ -21,12 +21,12 @@ To start running the ECS broker, do the following:
 
 1. Navigate to the Ops Manager Installation Dashboard and click **Import a Product** to upload the product file.
 
-1. Under the **Import a Product** button, click **+** next to the version number of ECS Service Broker for Pivotal Platform. This adds the tile to your staging area.
+1. Under the **Import a Product** button, click **+** next to the version number of ECS Service Broker for VMware Tanzu. This adds the tile to your staging area.
 
-1. Click the newly added **ECS Service Broker for Pivotal Platform** tile.
+1. Click the newly added **ECS Service Broker for VMware Tanzu** tile.
 
 
-## <a id='install'></a> Configure ECS Service Broker for Pivotal Platform
+## <a id='install'></a> Configure ECS Service Broker for VMware Tanzu
 
 1. Navigate to **Assign AZs and Networks** and confirm that the default Availability Zones and Network fields are correct.
 
@@ -68,7 +68,7 @@ To start running the ECS broker, do the following:
 
 1. Navigate to **Catalog Service 1**.
 
-1. Review settings for catalog service and plans. These settings define the services available in the Pivotal Platform marketplace. If any changes are made, click **Save**.
+1. Review settings for catalog service and plans. These settings define the services available in the VMware Tanzu marketplace. If any changes are made, click **Save**.
 
 1. Review the remaining catalog services. Services 4 and 5 are both disabled by default, but available for customization.
    <p class='note'><strong>Note:</strong> File-enabled buckets and Namespace services will not function on ECS Test Drive.</p>

@@ -1,10 +1,10 @@
 ---
-title: Troubleshooting ECS Service Broker for Pivotal Platform
+title: Troubleshooting ECS Service Broker for VMware Tanzu
 owner: Partners
 ---
 
 This document describes troubleshooting steps and common issues when running the
-ECS Service Broker for Pivotal Platform.
+ECS Service Broker for VMware Tanzu.
 
 
 # <a id="collecting-logs"></a> Collecting Logs
@@ -12,7 +12,7 @@ ECS Service Broker for Pivotal Platform.
 The ECS Service Broker is installed through a tile in Operations Manager, so when an
 installation fails, collecting logs from Ops Manager is helpful. To do this,
 navigate to the Ops Manager Installation Dashboard and select **Change Log**.
-Find the entry for the ECS Pivotal Platform Service Broker and click
+Find the entry for the ECS VMware Tanzu Service Broker and click
 **Logs**. The logs will be displayed for the following BOSH errands:
 
 * Installing Dell EMC ECS Broker
@@ -21,7 +21,7 @@ Find the entry for the ECS Pivotal Platform Service Broker and click
 
 If you encounter errors during run time, or more detailed logs are required,
 you can also collect logs from the deployed application. To find these
-logs, navigate to the Pivotal Platform Apps Manager tile. Find the organization and space for the
+logs, navigate to the VMware Tanzu Apps Manager tile. Find the organization and space for the
 ECS Broker, which is typically `ecs-broker-service-org` and `ecs-broker-service-space`.
 From there, you can view detailed application logs.
 
