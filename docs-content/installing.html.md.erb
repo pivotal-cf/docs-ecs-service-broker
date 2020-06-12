@@ -11,7 +11,7 @@ This topic describes how to install and configure ECS Service Broker for VMware 
 The ECS Service Broker installs as a single VMware Tanzu-deployed application, which makes API calls to an externally-hosted Dell EMC ECS installation. The broker uses a combination of both the ECS `management` API (which typically runs on port `4443` on ECS) and the S3 API (which runs on ports `9020`/`HTTP` and `9021`/`HTTPS`). If you do not yet have access to an ECS environment, you have two options:
 
 * Install the [ECS Community Edition](https://github.com/EMCECS/ECS-CommunityEdition) Docker-based install.
-* Use the publicly available [ECS Test Drive](https://ecstestdrive.com).
+* Use the publicly available [ECS Test Drive](https://portal.ecstestdrive.com).
 
 To install the service broker, you must configure the broker application to connect to the ECS management API. If desired, you may also customize the services and plans offered in the VMware Tanzu marketplace with additional pages in the Tile interface.
 
@@ -70,7 +70,12 @@ To start running the ECS broker, do the following:
 
 1. Review settings for catalog service and plans. These settings define the services available in the VMware Tanzu marketplace. If any changes are made, click **Save**.
 
-1. Review the remaining catalog services. Services 4 and 5 are both disabled by default, but available for customization.
+1. (Optional) Navigate to **Catalog Service 2**.
+
+1. (Optional) Enable Catalog Service 2. Review service settings and enter Default Bucket Quota value, if a Namespace type is selected. Click **Save**.
+
+1. Review the remaining catalog services. Services 2, 3, 4 and 5 are disabled by default, but available for customization.
+
    <p class='note'><strong>Note:</strong> File-enabled buckets and Namespace services will not function on ECS Test Drive.</p>
 
 1. For **Enable Global access to all Services and Plans**, navigate to **Service Access** and check the checkbox to open up access to all service plans across all orgs and spaces.
