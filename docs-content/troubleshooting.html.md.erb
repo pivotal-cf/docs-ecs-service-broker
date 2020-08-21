@@ -37,11 +37,11 @@ and port `9021` (HTTPS). If you are accessing ECS through a load-balancer, these
 To test access to these ports, use the CURL command from a Linux or Mac
 OS host:
 <pre class='terminal'>
-$ curl -v -k https://<ECS IP or HOST>:4443/login
+$ curl -v -k https://ECS_IP_or_HOST:4443/login
 
-$ curl -v -k http://<ECS IP or HOST>:9020/
+$ curl -v -k http://ECS_IP_or_HOST:9020/
 
-$ curl -v -k https://<ECS IP or HOST>:9021/
+$ curl -v -k https://ECS_IP_or_HOST:9021/
 </pre>
 You might see an "Unauthorized" error. This is not a problem, since connectivity has been established.
 

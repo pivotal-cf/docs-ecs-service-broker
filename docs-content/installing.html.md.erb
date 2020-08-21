@@ -46,6 +46,8 @@ To start running the ECS broker, do the following:
 
 1. (Optional) For **ECS Base URL**, enter the name of the ECS configured base URL that should be used with bucket credentials. If no value is entered, the broker will attempt to discover a default value. If this feature is enabled, ensure that the management user has System Monitor access on the ECS.
 
+1. (Optional) If **ECS Base URL** is entered and you wish to enable SSL communications with object endpoint, set **Use HTTPS** flag - with that, broker object endpoint and application binding URLs will use HTTPS schema and 9021 port
+
 1. Specify whether the ECS system has a certificate installed, which is signed by an available trust authority. This may not be available for development environments, and is not the case for self-signed certificates.
 
 1. If the installed ECS certificate is not signed by a trust authority, complete the **ECS Management Certificate** field by entering the ECS certificate.

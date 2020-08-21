@@ -3,11 +3,27 @@ title: Release Notes for ECS Service Broker for VMware Tanzu
 owner: Partners
 ---
 
+## <a id="ver-2-0-1"></a> v2.0.1
+
+**Release Date:** August 21, 2020
+
+Features added in this release:
+
+* Added configuration flag to enable HTTPS when using base url to generate object endpoint address and S3 URLs for bound applications
+* Optional name prefix parameter for services and bindings: a prefix to be added after broker prefix; generated name will have form of "broker prefix"-"optional prefix"-"GUID"
+
+Fixes and updates:
+* fix upgrades from 1.2.4: errand failed to registered broker due to installation to wrong org and space.
+* fix non-existent objects delete: requests failed when object cannot be found.
+* fix exception thrown on namespace binding when no Base URL configured for broker or provided as optional parameter
+* dependency updates: Spring Boot 2.2.9, Spring Cloud Open Service Broker 3.1.2
+
+
 ## <a id="ver-2-0-0"></a> v2.0.0
 
 **Release Date:** June 12, 2020
 
-Feature included in this release:
+Features included in this release:
 
 * Input field for a plan price currency.
 * Сonfigurable reclamation policies for buckets during service instance deletion ("delete", "detach" or "fail")
