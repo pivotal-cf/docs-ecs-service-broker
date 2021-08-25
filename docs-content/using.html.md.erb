@@ -157,18 +157,26 @@ The ECS service broker supports the ability to create a "remote connection" to a
 Having created a bucket named `my_bucket` previously, you cannot connect to that bucket on another VMware Tanzu instance. First on the original VMware Tanzu instance, create a "remote connection" service key by running the following command:
 
 <pre class="terminal">
-$ cf create-service-key my-bucket pcf2 -c '{"connect_remote": true}'
-
+$ cf create-service-key my-bucket my-bucket-key-1 -c '{"remote_connection": true}'
 </pre>
 
 View the service key information created by running the following command:
 
 <pre class="terminal">
-$ cf service-key my-bucket pcf2
+$ cf service-key my-bucket my-bucket-key-1
+
+{
+ "accessKey": "12345678-abcd-2345-5678-1234abcd0987",
+ "instanceId": "87654321-dcba-1234-1234-1234abcd0987",
+ "secretKey": "abcd0123-4321-dcba-1f2e-1234abcd0987"
+}
 </pre>
 
-Next on the _alternate_ VMware Tanzu instance, create an service instance of the same bucket connecting remotely to the existing one:
+Next on the _alternate_ VMware Tanzu instance, create an service instance of the same bucket connecting remotely to the existing one. Put service key JSON as `remote_connection` value :
 
 <pre class="terminal">
-$ cf create-service ecs-bucket 5gb my-bucket -c '{"remote_connection": {""}}'
+$ cf create-service ecs-bucket unlimited my-bucket-remote -c '{"remote_connection": { "accessKey": "12345678-abcd-2345-5678-1234abcd0987", "instanceId": "87654321-dcba-1234-1234-1234abcd0987", "secretKey": "abcd0123-4321-dcba-1f2e-1234abcd0987" } }'
 </pre>
+
+Ensure that the service and plan definitions (defined in the broker catalog) are the same between the brokers on all VMware Tanzu instances.
+If the catalog definitions differ between the two, the broker will return an error to the user and decline to remotely connect the service instance.
