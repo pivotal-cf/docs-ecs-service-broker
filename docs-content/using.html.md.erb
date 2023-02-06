@@ -5,7 +5,6 @@ owner: Partners
 
 This topic describes how to use ECS Service Broker for VMware Tanzu after it has been installed.
 
-
 ## <a id='using'></a> Using ECS Service Broker for VMware Tanzu with an App
 
 To use ECS Service Broker for VMware Tanzu with an app, follow the procedures in this section to create a service instance and bind the service instance to your app. For more information about managing service instances, see [Managing Service Instances with the cf CLI](https://docs.pivotal.io/pivotalcf/devguide/services/managing-services.html).
@@ -14,14 +13,14 @@ To use ECS Service Broker for VMware Tanzu with an app, follow the procedures in
 
 After the tile is installed, `ecs-broker` and its service plans appear in your Marketplace. Run `cf marketplace` to see the service listing.
 
-<pre class="terminal">
+```
 $ cf marketplace
 Getting services from marketplace in org test / space test as admin...
 OK
 
 service            plans                             description
 ecs-bucket         5gb, unlimited*                   Elastic Cloud S3 Object Storage Bucket
-</pre>
+```
 
 ### <a id="create"></a> Create a Service Instance
 
@@ -29,9 +28,9 @@ Use `cf create-service` to provision a bucket.
 
 The following example creates a `5gb` service that provisions a bucket.
 
-<pre class="terminal">
+```
 $ cf create-service ecs-bucket 5gb my-bucket
-</pre>
+```
 
 Check the creation status using `cf services`. This displays a list of all your service instances. To check the status of a specific service instance, run `cf service NAME-OF-YOUR-SERVICE`.
 
@@ -39,14 +38,15 @@ Check the creation status using `cf services`. This displays a list of all your 
 
 After you create your bucket, run `cf bind-service` to bind the service to your app.
 
-<pre class="terminal">
+```
 $ cf bind-service sample-app my-bucket
-</pre>
+```
 
-In tiles using broker (software) version 1.1.3 and later connected to ECS v3.3 and later, bucket policy can be applied to ECS buckets provisioned by the broker. This is enabled on binding like so:
-<pre class="terminal">
+In tiles using broker (software) version 1.1.3 and later connected to ECS v3.3 and later, bucket policy can be applied to ECS buckets provisioned by the broker. This is enabled on binding like this:
+
+```
 $ cf bind-service sample-app my-bucket -c '{"policy": "default-total-access"}'
-</pre>
+```
 
 This parameter gives the binding user full control of the bucket, including the ability to set bucket policy. As of broker v1.1.3 this is the only policy that can be set via cf.
 In order to apply a custom bucket policy use the binding parameters, as shown above, to grant the user permission to alter bucket policy. Then, using another method, set the bucket policy with the binding user/credentials.
@@ -62,7 +62,7 @@ After you bind your service instance to your app, you can find the credentials o
 
 Run `cf env APP-NAME` to display environment variables. The credentials are listed under the [VCAP_SERVICES](https://docs.pivotal.io/pivotalcf/devguide/deploy-apps/environment-variable.html#VCAP-SERVICES) key.
 
-<pre class="terminal">
+```
 $ cf env sample-app
 Getting env variables for app sample-app in org test / space test as admin...
 OK
@@ -95,7 +95,7 @@ System-Provided:
  }
 }
 ...
-</pre>
+```
 
 You can use the access key ID, secret access key, bucket, and region to connect to a bucket.
 
@@ -110,7 +110,7 @@ Follow the instructions below to unbind your service instance from all apps and 
 
 Run `cf service` to list your available services.
 
-<pre class="terminal">
+```
 $ cf service
 
 Getting services in org test / space test as admin...
@@ -118,7 +118,7 @@ OK
 
 name           service    plan    bound apps   last operation
 my-bucket      ecs-bucket 5gb     sample-app   create succeeded
-</pre>
+```
 
 The above example shows that `my-bucket` is bound to the `sample-app` app.
 
@@ -126,17 +126,17 @@ The above example shows that `my-bucket` is bound to the `sample-app` app.
 
 Run `cf unbind` to unbind the service from your app:
 
-<pre class="terminal">
+```
 $ cf unbind-service sample-app my-bucket
-</pre>
+```
 
 ### <a id="delete"></a> Delete a Service Instance
 
 Run `cf delete-service` to delete the service.
 
-<pre class="terminal">
+```
   $ cf delete-service my-bucket
-</pre>
+```
 
 Run the `cf services` command to check the deletion status.
 
@@ -156,13 +156,13 @@ The ECS service broker supports the ability to create a "remote connection" to a
 
 Having created a bucket named `my_bucket` previously, you cannot connect to that bucket on another VMware Tanzu instance. First on the original VMware Tanzu instance, create a "remote connection" service key by running the following command:
 
-<pre class="terminal">
+```
 $ cf create-service-key my-bucket my-bucket-key-1 -c '{"remote_connection": true}'
-</pre>
+```
 
 View the service key information created by running the following command:
 
-<pre class="terminal">
+```
 $ cf service-key my-bucket my-bucket-key-1
 
 {
@@ -170,13 +170,13 @@ $ cf service-key my-bucket my-bucket-key-1
  "instanceId": "87654321-dcba-1234-1234-1234abcd0987",
  "secretKey": "abcd0123-4321-dcba-1f2e-1234abcd0987"
 }
-</pre>
+```
 
 Next on the _alternate_ VMware Tanzu instance, create an service instance of the same bucket connecting remotely to the existing one. Put service key JSON as `remote_connection` value :
 
-<pre class="terminal">
+```
 $ cf create-service ecs-bucket unlimited my-bucket-remote -c '{"remote_connection": { "accessKey": "12345678-abcd-2345-5678-1234abcd0987", "instanceId": "87654321-dcba-1234-1234-1234abcd0987", "secretKey": "abcd0123-4321-dcba-1f2e-1234abcd0987" } }'
-</pre>
+```
 
 Ensure that the service and plan definitions (defined in the broker catalog) are the same between the brokers on all VMware Tanzu instances.
 If the catalog definitions differ between the two, the broker will return an error to the user and decline to remotely connect the service instance.
