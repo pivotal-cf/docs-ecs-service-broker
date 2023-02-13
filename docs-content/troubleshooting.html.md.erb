@@ -26,7 +26,7 @@ From there, you can view detailed application logs.
 For the most part, issues with the broker are a result of incorrect configuration.
 Here are some general things to check, which commonly resolve issues:
 
-1. Make sure you have HTTP connectivity to both the ECS management API, which typically runs on port `4443`, and ECS S3 service, which will run on port `9020` (HTTP) and port `9021` (HTTPS). If you are accessing ECS through a load-balancer, these port numbers may be different.
+* Make sure you have HTTP connectivity to both the ECS management API, which typically runs on port `4443`, and ECS S3 service, which will run on port `9020` (HTTP) and port `9021` (HTTPS). If you are accessing ECS through a load-balancer, these port numbers may be different.
 To test access to these ports, use the CURL command from a Linux or Mac OS host:
 
   ```
@@ -39,7 +39,7 @@ To test access to these ports, use the CURL command from a Linux or Mac OS host:
 
   You might see an "Unauthorized" error. This is not a problem, since connectivity has been established.
 
-1. Make sure you have Management User credentials configured for the **ECS Admin Username**.
+* Make sure you have Management User credentials configured for the **ECS Admin Username**.
 ECS has support for two types of users: object users and management. The broker will require a management user to be configured.
 
   Test authentication
@@ -50,7 +50,7 @@ ECS has support for two types of users: object users and management. The broker 
   <?xml version="1.0" encoding="UTF-8" standalone="yes"?><loggedIn><user>USERNAME</user></loggedIn>
   ```
 
-1. Make sure that the ECS certificate is configured properly.
+* Make sure that the ECS certificate is configured properly.
 A production ECS installation will typically have a signed certificate
 installed, which does not require any special confguration. If this is the case,
 ensure that the tile prompt, _"Is the ECS SSL certificate is signed by a trust
