@@ -29,28 +29,28 @@ Here are some general things to check, which commonly resolve issues:
 1. Make sure you have HTTP connectivity to both the ECS management API, which typically runs on port `4443`, and ECS S3 service, which will run on port `9020` (HTTP) and port `9021` (HTTPS). If you are accessing ECS through a load-balancer, these port numbers may be different.
 To test access to these ports, use the CURL command from a Linux or Mac OS host:
 
-```
-$ curl -v -k https://ECS_IP_or_HOST:4443/login
+  ```
+  $ curl -v -k https://ECS_IP_or_HOST:4443/login
 
-$ curl -v -k http://ECS_IP_or_HOST:9020/
+  $ curl -v -k http://ECS_IP_or_HOST:9020/
 
-$ curl -v -k https://ECS_IP_or_HOST:9021/
-```
+  $ curl -v -k https://ECS_IP_or_HOST:9021/
+  ```
 
-You might see an "Unauthorized" error. This is not a problem, since connectivity has been established.
+  You might see an "Unauthorized" error. This is not a problem, since connectivity has been established.
 
 1. Make sure you have Management User credentials configured for the **ECS Admin Username**.
 ECS has support for two types of users: object users and management. The broker will require a management user to be configured.
 
-Test authentication
+  Test authentication
 
-```
-$ curl -k -u <username>:<password> https://<ECS IP or HOST>/login
+  ```
+  $ curl -k -u <username>:<password> https://<ECS IP or HOST>/login
 
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><loggedIn><user>USERNAME</user></loggedIn>
-```
+  <?xml version="1.0" encoding="UTF-8" standalone="yes"?><loggedIn><user>USERNAME</user></loggedIn>
+  ```
 
-2. Make sure that the ECS certificate is configured properly.
+1. Make sure that the ECS certificate is configured properly.
 A production ECS installation will typically have a signed certificate
 installed, which does not require any special confguration. If this is the case,
 ensure that the tile prompt, _"Is the ECS SSL certificate is signed by a trust
@@ -58,10 +58,10 @@ authority?"_ is marked as **true**.
 If using a self-signed certificate, you must import that cert into the tile
 configuration. You can read the certificate from the host using the `openssl` command from a Linux or Mac OS:
 
-```
-$ openssl s_client -showcerts -connect <ECS IP or HOST>.com:4443 < /dev/null | \
-  openssl x509 -text | sed -n -e '/BEGIN\ CERTIFICATE/,/END\ CERTIFICATE/ p'
-```
+  ```
+  $ openssl s_client -showcerts -connect <ECS IP or HOST>.com:4443 < /dev/null | \
+    openssl x509 -text | sed -n -e '/BEGIN\ CERTIFICATE/,/END\ CERTIFICATE/ p'
+  ```
 
 ### <a id="common-issues"></a> Common Issues
 
